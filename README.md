@@ -106,7 +106,7 @@ O roadmap completo, com o detalhamento técnico de cada dia de desenvolvimento (
 
 ## Licença
 
-Este projeto está sob a licença definida em [`MIT LICENSE`](./LICENSE).
+Este projeto está disponibilizado sob a licença [`MIT LICENSE`](./LICENSE).
 
 ## Autor
 
