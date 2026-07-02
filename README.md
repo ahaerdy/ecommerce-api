@@ -106,8 +106,9 @@ O roadmap completo, com o detalhamento técnico de cada dia de desenvolvimento (
 
 ## Licença
 
-Este projeto está sob a licença definida em [`LICENSE`](./LICENSE).
+Este projeto está sob a licença definida em [`MIT LICENSE`](./LICENSE).
 
 ## Autor
 
-Desenvolvido por **Arthur** como projeto de portfólio, com documentação incremental do processo de construção.
+**Arthur Haerdy Jr** 
+<br>LinkedIn: [arthur-haerdy-jr](https://www.linkedin.com/in/arthur-haerdy-jr/)
