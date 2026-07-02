@@ -86,7 +86,7 @@ ecommerce-api/
   <img src="000-Midia_e_Anexos/2026-07-02-08-15-43.png" alt="" width="840">
 </p>
 
-### 2. Instalação do Docker (necessária no Kubuntu)
+### 2. Instalação do Docker
 
 Caso o Docker/Docker Compose ainda não estejam instalados:
 
