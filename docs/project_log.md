@@ -64,8 +64,8 @@ ecommerce-api/
 
 ### 1. Bootstrap do projeto (Spring Initializr)
 
-1. Acesse [start.spring.io](https://start.spring.io/).
-2. Configure exatamente:
+1. Acessar [start.spring.io](https://start.spring.io/).
+2. Configurar:
    - Project: **Maven**
    - Language: **Java**
    - Spring Boot: versão estável mais recente
@@ -73,14 +73,14 @@ ecommerce-api/
    - Artifact: `ecommerce-api`
    - Packaging: **Jar**
    - Java: **21**
-3. Em "Add Dependencies", adicione:
+3. Em "Add Dependencies", adicionar:
    - Spring Web
    - Spring Data JPA
    - Flyway Migration
    - Lombok
    - Validation
    - *(PostgreSQL Driver foi adicionado inicialmente, mas substituído pelo MySQL — ver passo 5)*
-4. Clique em **Generate**, baixe o `.zip`, descompacte e abra a pasta no IntelliJ.
+4. Clicar em **Generate**, baixe o `.zip`, descompacte e abra a pasta no IntelliJ.
 
 <p align="center">
   <img src="000-Midia_e_Anexos/2026-07-02-08-15-43.png" alt="" width="840">
