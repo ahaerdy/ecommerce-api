@@ -485,15 +485,15 @@ graph TD
     classDef infra fill:#f96,stroke:#333,stroke-width:2px,color:#000;
     classDef logic fill:#f9f,stroke:#333,stroke-width:2px,color:#000;
 
-    Start((Início: Run App)) --> Main["<u>EcommerceApiApplication.main</u><br/>Inicializa o orquestrador."]:::main
+    Start((Início: Run App)) --> Main["<strong>EcommerceApiApplication.main</strong><br/>Inicializa o orquestrador."]:::main
 
-    Main --> Init["<u>Inicializa o Spring Context</u><br/>Cria o ApplicationContext e o contêiner de Beans."]:::spring
-    Init --> Scan["<u>Component Scan</u><br/>Varredura de metadados para descoberta de componentes."]:::spring
+    Main --> Init["<strong>Inicializa o Spring Context</strong><br/>Cria o ApplicationContext e o contêiner de Beans."]:::spring
+    Init --> Scan["<strong>Component Scan</strong><br/>Varredura de metadados para descoberta de componentes."]:::spring
 
     subgraph Infraestrutura
-    Scan --> Flyway["<u>Flyway Migration</u><br/>Valida e aplica esquemas de banco."]:::infra
+    Scan --> Flyway["<strong>Flyway Migration</strong><br/>Valida e aplica esquemas de banco."]:::infra
     Flyway --> DB{Banco MySQL Pronto?}:::infra
-    DB -- Não --> Migrate["Executa <u><strong>V1__criar_tabela_cliente.sql</strong></u><br/>Cria a tabela cliente e sincroniza o schema."]:::infra
+    DB -- Não --> Migrate["Executa <strong>V1__criar_tabela_cliente.sql</strong><br/>Cria a tabela cliente e sincroniza o schema."]:::infra
     Migrate --> DB
     DB -- Sim --> Hibernate["Hibernate / JPA<br/>Configuração da camada de persistência"]:::infra
     end
