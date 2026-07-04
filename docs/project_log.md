@@ -1,4 +1,4 @@
-#  Log Técnico: E-commerce API (Spring Boot + MySQL)
+#  Log Técnico do Projeto
 
 > Roteiro de execução em formato de log técnico, construído dia a dia, para servir tanto de **guia reprodutível** quanto de **peça de portfólio** (estilo entrega de job freelancer no Workana).
 
