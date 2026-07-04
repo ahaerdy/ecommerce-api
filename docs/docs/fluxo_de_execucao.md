@@ -33,7 +33,7 @@ graph TD
     subgraph Infraestrutura
     Scan --> Flyway["<u>Flyway Migration</u><br>Valida e aplica esquemas de banco."]:::infra
     Flyway --> DB{Banco MySQL Pronto?}:::infra
-    DB -- Não --> Migrate["Executa --> <u><strong>V1__criar_tabela.sql</strong></u><br>Cria a tabela cliente e Sincroniza o schema."]:::infra
+    DB -- Não --> Migrate["Executa <u><strong>V1__criar_tabela.sql</strong></u><br>Cria a tabela cliente e Sincroniza o schema."]:::infra
     Migrate --> DB
     DB -- Sim --> Hibernate[Hibernate / JPA: Configuração da camada de persistência]:::infra
     end
