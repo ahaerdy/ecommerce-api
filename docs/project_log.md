@@ -495,11 +495,11 @@ graph TD
     Flyway --> DB{Banco MySQL Pronto?}:::infra
     DB -- Não --> Migrate["Executa <strong>V1__criar_tabela_cliente.sql</strong><br/>Cria a tabela cliente e sincroniza o schema."]:::infra
     Migrate --> DB
-    DB -- Sim --> Hibernate["Hibernate / JPA<br/>Configuração da camada de persistência"]:::infra
+    DB -- Sim --> Hibernate["<strong>Hibernate / JPA</strong><br/>Configuração da camada de persistência"]:::infra
     end
 
     subgraph Mapeamento
-    Hibernate --> Entity["Análise de @Entity<br/>Interpretação de metadados via Reflection"]:::logic
+    Hibernate --> Entity["Análise de <strong>@Entity</strong><br/>Interpretação de metadados via Reflection"]:::logic
     Entity --> Meta["Metamodelo JPA<br/>Construção do espelho objeto-relacional"]:::logic
     end
 
