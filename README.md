@@ -2,7 +2,9 @@
 
 > API REST para gestão de clientes, produtos e pedidos, construída com Spring Boot e MySQL, seguindo boas práticas de arquitetura em camadas, versionamento de banco de dados, segurança e testes automatizados.
 
-**Status:** 🚧 Em desenvolvimento — projeto construído em etapas diárias e documentado publicamente. Veja o progresso detalhado, decisões técnicas e troubleshooting em [`docs/project_log.md`](./docs/project_log.md).
+**Status:** 🚧 Em desenvolvimento — projeto construído em etapas diárias e documentado publicamente. 
+
+### Veja o progresso detalhado, decisões técnicas e troubleshooting em [`docs/project_log.md`](./docs/project_log.md).
 
 ---
 
