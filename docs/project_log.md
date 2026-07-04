@@ -451,6 +451,76 @@ docker compose up -d
 
 ---
 
+## Anexo Teórico — Arquitetura e Fluxo de Inicialização do Spring Boot
+
+> Esta seção complementa o DIA 01 sob a ótica conceitual: enquanto o log acima documenta *o que foi feito* (comandos, arquivos, configurações), esta parte documenta *o que acontece por baixo dos panos* quando `EcommerceApiApplication.main` é executado — ou seja, o percurso que o log de execução (seção 6) exibiu na tela, explicado camada por camada. Escrita em estilo de documentação técnica/acadêmica para servir como material de consulta e revisão.
+
+### Contextualização
+
+Do ponto de vista do processo de *bootstrapping* do Spring Boot, a aplicação transita entre dois estados bem definidos: um **estado estático**, correspondente ao código-fonte compilado (as classes `.class` geradas a partir de `Cliente.java`, `ClienteRepository.java` etc.), e um **estado operacional**, no qual esses artefatos são carregados, instanciados e orquestrados dinamicamente em tempo de execução até a aplicação ficar pronta para atender requisições na porta `8080`.
+
+### O núcleo: `SpringApplication.run` e a gestão de ciclo de vida
+
+A invocação de `SpringApplication.run(EcommerceApiApplication.class, args)`, vista na seção 6, não é um simples iniciador de processo — é um **orquestrador** que delega toda a gestão da aplicação ao contêiner Spring. Três fundamentos sustentam essa orquestração:
+
+1. **Instanciação do contêiner (*ApplicationContext*)** — o Spring cria um repositório centralizado de objetos vivos, o *ApplicationContext*. Esse contêiner é único por aplicação e provê a infraestrutura que mantém o estado e a configuração de todos os componentes (é o que, no log da seção 6, aparece como `Root WebApplicationContext: initialization completed`).
+2. **Inversão de Controle (IoC)** — o *framework* assume a responsabilidade de criar e configurar todos os objetos gerenciados (os *Beans*), eliminando a necessidade de instanciação manual via `new`. É por isso que, em `ClienteRepository`, nunca escrevemos `new ClienteRepository()` — quem cria essa instância é o próprio Spring.
+3. **Encapsulamento de componentes** — cada classe identificada como componente (Repositórios, Serviços, Controllers) vira um *Bean*: uma instância gerenciada cujo ciclo de vida completo — da inicialização à destruição — é supervisionado pelo contêiner.
+
+### Fluxo de inicialização (*bootstrap*)
+
+O diagrama a seguir sintetiza a sequência lógica observada no log de execução, evidenciando as camadas de configuração que garantem que o sistema esteja íntegro antes de expor seus *endpoints*:
+
+```mermaid
+graph TD
+    %% Estilo dos nós (Texto preto para legibilidade)
+    classDef main fill:#f9f,stroke:#333,stroke-width:2px,color:#000;
+    classDef spring fill:#69f,stroke:#333,stroke-width:2px,color:#000;
+    classDef infra fill:#f96,stroke:#333,stroke-width:2px,color:#000;
+    classDef logic fill:#f9f,stroke:#333,stroke-width:2px,color:#000;
+
+    Start((Início: Run App)) --> Main["<u>EcommerceApiApplication.main</u><br/>Inicializa o orquestrador."]:::main
+
+    Main --> Init["<u>Inicializa o Spring Context</u><br/>Cria o ApplicationContext e o contêiner de Beans."]:::spring
+    Init --> Scan["<u>Component Scan</u><br/>Varredura de metadados para descoberta de componentes."]:::spring
+
+    subgraph Infraestrutura
+    Scan --> Flyway["<u>Flyway Migration</u><br/>Valida e aplica esquemas de banco."]:::infra
+    Flyway --> DB{Banco MySQL Pronto?}:::infra
+    DB -- Não --> Migrate["Executa <u><strong>V1__criar_tabela_cliente.sql</strong></u><br/>Cria a tabela cliente e sincroniza o schema."]:::infra
+    Migrate --> DB
+    DB -- Sim --> Hibernate["Hibernate / JPA<br/>Configuração da camada de persistência"]:::infra
+    end
+
+    subgraph Mapeamento
+    Hibernate --> Entity["Análise de @Entity<br/>Interpretação de metadados via Reflection"]:::logic
+    Entity --> Meta["Metamodelo JPA<br/>Construção do espelho objeto-relacional"]:::logic
+    end
+
+    subgraph Persistência
+    Meta --> Repo["Instanciação de Repositórios<br/>Criação de Beans para acesso a dados"]:::logic
+    Repo --> Proxy["Implementação Dinâmica<br/>Geração de Proxy em tempo de execução"]:::logic
+    end
+
+    Proxy --> Ready((Aplicação Pronta: Port 8080)):::spring
+
+    %% Conexões de dependência
+    Entity -.->|Usa mapeamento| Repo
+    Flyway -.->|Garante estrutura| Entity
+```
+
+### Detalhamento das etapas técnicas
+
+* **Inicialização do contexto (*ApplicationContext*)** — criação do contêiner central. Esse ambiente não apenas armazena os *Beans*, mas provê a infraestrutura para que eles interajam sem que o desenvolvedor gerencie suas dependências manualmente.
+* **Varredura de componentes (*Component Scan*)** — o *framework* executa uma varredura recursiva no pacote `com.arthur.ecommerce_api` (e subpacotes) em busca de anotações. É essa varredura que encontra `ClienteRepository` e o registra como candidato a *Bean*.
+* **Infraestrutura (Flyway)** — camada de conformidade que assegura a integridade estrutural do banco relacional *antes* da ativação da lógica de negócio. É exatamente o passo visto no log: `Successfully validated 1 migration` seguido de `Schema 'ecommerce' is up to date`.
+* **Mapeamento (Hibernate/JPA)** — processamento das classes `@Entity` (no caso, `Cliente`). Via API de *Reflection*, o sistema mapeia a estrutura de classes para tabelas de banco, consolidando o metamodelo que permite a persistência abstrata.
+* **Persistência e Proxy** — a identificação de interfaces como `JpaRepository` (herdada por `ClienteRepository`) ativa a injeção de uma **implementação dinâmica**: o Spring usa o padrão *Proxy* para fornecer, em tempo de execução, a lógica de CRUD (`save`, `findAll`, `findById`, `deleteById`), abstraindo a complexidade das consultas SQL sem que uma única linha de implementação precise ser escrita manualmente.
+
+> **Nota de aprendizagem:** este é o ponto mais importante para reter — a "mágica" de `ClienteRepository extends JpaRepository<Cliente, Long>` funcionar sem corpo de implementação não é mágica nenhuma: é o Spring gerando, em tempo de execução, uma classe *proxy* que implementa a interface e traduz cada chamada de método em uma consulta JPQL/SQL equivalente.
+
+---
+
 ## Roteiro dos próximos dias (visão delineada)
 
 > Estes dias serão detalhados no mesmo formato de log conforme forem executados, mantendo a consistência do documento.
