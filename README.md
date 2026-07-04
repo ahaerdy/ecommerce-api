@@ -4,7 +4,7 @@
 
 **Status:** 🚧 Em desenvolvimento — projeto construído em etapas diárias e documentado publicamente. Veja o progresso detalhado, decisões técnicas e troubleshooting em:
 
-### ▶️ [`docs/project_log.md`](./docs/project_log.md).
+### ▶️ [`Log Técnico do Projeto`](./docs/project_log.md).
 
 ---
 
