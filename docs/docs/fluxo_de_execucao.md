@@ -25,15 +25,15 @@ graph TD
     classDef infra fill:#f96,stroke:#333,stroke-width:2px,color:#000;
     classDef logic fill:#f9f,stroke:#333,stroke-width:2px,color:#000;
 
-    Start((Início: Run App)) --> Main["EcommerceApiApplication.main<br/>Inicializa o orquestrador"]:::main
+    Start((Início: Run App)) --> Main["<u>EcommerceApiApplication.main</u><br/>Inicializa o orquestrador."]:::main
     
-    Main --> Init[Inicializar Spring Context: Criação do ApplicationContext e do contêiner de Beans]:::spring
-    Init --> Scan[Component Scan: Varredura de metadados para descoberta de componentes]:::spring
+    Main --> Init["<u>Inicializa o Spring Context</u><br>Cria o ApplicationContext e o contêiner de Beans."]:::spring
+    Init --> Scan["<u>Component Scan</u><br>Varredura de metadados para descoberta de componentes."]:::spring
     
     subgraph Infraestrutura
-    Scan --> Flyway[Flyway Migration: Validação e aplicação de esquemas de banco]:::infra
+    Scan --> Flyway["<u>Flyway Migration</u><br>Valida e aplica esquemas de banco."]:::infra
     Flyway --> DB{Banco MySQL Pronto?}:::infra
-    DB -- Não --> Migrate[Executar V1__criar_tabela.sql: Sincronização de schema]:::infra
+    DB -- Não --> Migrate["Executa --> <u><strong>V1__criar_tabela.sql</strong></u><br>Cria a tabela cliente e Sincroniza o schema."]:::infra
     Migrate --> DB
     DB -- Sim --> Hibernate[Hibernate / JPA: Configuração da camada de persistência]:::infra
     end
@@ -65,4 +65,3 @@ graph TD
 * **Mapeamento (Hibernate/JPA):** Processamento das classes `@Entity`. Através da API de *Reflection*, o sistema mapeia a estrutura de classes para tabelas de banco, consolidando o metamodelo que permite a persistência abstrata.
 * **Persistência e Proxy:** A identificação de interfaces como `JpaRepository` ativa a injeção de uma implementação dinâmica. O Spring utiliza o padrão *Proxy* para fornecer, em tempo de execução, a lógica de persistência (CRUD), abstraindo a complexidade das consultas SQL e garantindo uma camada de acesso a dados robusta.
 
-```
