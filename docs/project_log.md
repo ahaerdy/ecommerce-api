@@ -6,6 +6,10 @@
 
 Desenvolver uma API REST robusta para gestão de clientes, produtos e pedidos, priorizando boas práticas de engenharia: arquitetura em camadas, versionamento de banco, validação de dados, segurança com JWT, testes automatizados e documentação via Swagger.
 
+## Justificativa da Escolha Tecnológica: por que Spring Boot?
+
+A escolha do Spring Boot como *framework* central deste projeto não é arbitrária. Sob a ótica de um pesquisador, o Spring Boot pode ser definido como um *framework* de infraestrutura que abstrai a complexidade do ecossistema Java Enterprise (Jakarta EE), adotando o paradigma de **Convenção sobre Configuração** (*Convention over Configuration*): ele agrupa bibliotecas consagradas (Hibernate, Tomcat, Jackson) e as configura automaticamente a partir do que detecta no *classpath*, eliminando boilerplate de infraestrutura (conexões, servidores, transações) e liberando o desenvolvedor para focar exclusivamente no domínio de negócio — no caso deste projeto, as entidades `Cliente`, `Produto` e `Pedido`. Essa modularidade é viabilizada pelo mecanismo de *Starters* (`spring-boot-starter-data-jpa`, `spring-boot-starter-web`, `spring-boot-starter-security` etc.), que permitem montar a "caixa de ferramentas" conforme a necessidade de cada etapa do projeto. Uma análise aprofundada dessa decisão arquitetural — incluindo contexto histórico, definição formal e os mecanismos internos de *autoconfiguration* — está documentada em [`spring_boot_fundamentos.md`](docs/spring_boot_fundamentos.md).
+
 ## Stack Tecnológica
 
 | Categoria | Tecnologia |
